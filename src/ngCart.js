@@ -34,7 +34,27 @@ angular.module('ngCart', ['ngCart.directives'])
                 shipping : null,
                 taxRate : null,
                 tax : null,
-                items : []
+                items : [],
+                shippingAddress : {
+                    phone: String,
+                    street: String,
+                    number: String,
+                    dir1: String,
+                    dir2: String,
+                    postalCode: String,
+                    province: String,
+                    country: String
+                },
+                billingAddress : {
+                    phone: String,
+                    street: String,
+                    number: String,
+                    dir1: String,
+                    dir2: String,
+                    postalCode: String,
+                    province: String,
+                    country: String
+                }
             };
         };
 
@@ -83,7 +103,7 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         this.getTaxRate = function(){
-            return this.$cart.taxRate
+            return this.$cart.taxRate;
         };
 
         this.getTax = function(){
@@ -97,6 +117,24 @@ angular.module('ngCart', ['ngCart.directives'])
 
         this.getCart = function(){
             return this.$cart;
+        };
+
+        this.setShippingAddress = function(shippingAddress){
+            this.$cart.shippingAddress = shippingAddress;
+            return this.getShippingAddress();
+        };
+
+        this.getShippingAddress = function(){
+            return  this.$cart.shippingAddress;
+        };
+
+        this.setBillingAddressAddress = function(billingAddress){
+            this.$cart.billingAddress = billingAddress;
+            return this.getBillingAddressAddress();
+        };
+
+        this.getBillingAddressAddress = function(){
+            return  this.$cart.billingAddress;
         };
 
         this.getItems = function(){
@@ -149,16 +187,16 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         this.empty = function () {
-            
+
             $rootScope.$broadcast('ngCart:change', {});
             this.$cart.items = [];
             $window.localStorage.removeItem('cart');
         };
-        
+
         this.isEmpty = function () {
-            
+
             return (this.$cart.items.length > 0 ? false : true);
-            
+
         };
 
         this.toObject = function() {
