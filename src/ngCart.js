@@ -35,6 +35,7 @@ angular.module('ngCart', ['ngCart.directives'])
                 taxRate : null,
                 tax : null,
                 items : [],
+                localId : null,
                 shippingAddress : {
                     phone: String,
                     street: String,
@@ -117,6 +118,15 @@ angular.module('ngCart', ['ngCart.directives'])
 
         this.getCart = function(){
             return this.$cart;
+        };
+
+        this.setLocalId = function(localId){
+            this.$cart.localId = localId;
+            return this.getLocalId();
+        };
+
+        this.getLocalId = function(){
+            return  this.$cart.localId;
         };
 
         this.setShippingAddress = function(shippingAddress){
