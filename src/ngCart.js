@@ -138,12 +138,12 @@ angular.module('ngCart', ['ngCart.directives'])
             return  this.$cart.shippingAddress;
         };
 
-        this.setBillingAddressAddress = function(billingAddress){
+        this.setBillingAddress = function(billingAddress){
             this.$cart.billingAddress = billingAddress;
             return this.getBillingAddressAddress();
         };
 
-        this.getBillingAddressAddress = function(){
+        this.getBillingAddress = function(){
             return  this.$cart.billingAddress;
         };
 
