@@ -219,6 +219,9 @@ angular.module('ngCart', ['ngCart.directives'])
             });
 
             return {
+                localId: this.getLocalId(),
+                shippingAddress: this.getShippingAddress(),
+                billingAddress: this.getBillingAddress(),
                 shipping: this.getShipping(),
                 tax: this.getTax(),
                 taxRate: this.getTaxRate(),
