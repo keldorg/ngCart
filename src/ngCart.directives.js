@@ -17,6 +17,9 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
                 quantity:'@',
                 quantityMax:'@',
                 price:'@',
+                weight: '@',
+                taxValue: '@',
+                tax: '@',
                 data:'='
             },
             transclude: true,

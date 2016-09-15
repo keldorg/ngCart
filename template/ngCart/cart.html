@@ -13,18 +13,21 @@
             <th></th>
             <th>Quantity</th>
             <th>Amount</th>
+            <th>SubTotal</th>
             <th>Total</th>
         </tr>
         </thead>
         <tfoot>
-        <tr ng-show="ngCart.getTax()">
+        <tr ng-repeat="tax in ngCart.getCart().taxes track by $index">
             <td></td>
             <td></td>
             <td></td>
-            <td>Tax ({{ ngCart.getTaxRate() }}%):</td>
-            <td>{{ ngCart.getTax() | currency }}</td>
+            <td></td>
+            <td>{{tax.name}} ({{ tax.tax }}%):</td>
+            <td>{{ tax.value | currency }}</td>
         </tr>
         <tr ng-show="ngCart.getShipping()">
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -32,6 +35,15 @@
             <td>{{ ngCart.getShipping() | currency }}</td>
         </tr>
         <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Total:</td>
+            <td>{{ ngCart.subTotalCost() | currency }}</td>
+        </tr>
+        <tr>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
@@ -49,6 +61,7 @@
                 {{ item.getQuantity() | number }}&nbsp;&nbsp;
                 <span class="glyphicon glyphicon-plus" ng-click="item.setQuantity(1, true)"></span></td>
             <td>{{ item.getPrice() | currency}}</td>
+            <td>{{ item.getSubTotal() | currency }}</td>
             <td>{{ item.getTotal() | currency }}</td>
         </tr>
         </tbody>
