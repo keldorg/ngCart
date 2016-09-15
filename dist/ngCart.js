@@ -252,7 +252,6 @@ angular.module('ngCart', ['ngCart.directives'])
                 billingAddress: this.getBillingAddress(),
                 shipping: this.getShipping(),
                 taxTotalValue: this.getTaxesTotalValue(),
-                tax: this.getTax(),
                 taxes: this.getTaxes(),
                 subTotal: this.getSubTotal(),
                 totalCost: this.totalCost(),
