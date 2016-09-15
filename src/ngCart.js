@@ -198,7 +198,7 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         this.totalCost = function () {
-            return +parseFloat(this.getSubTotal() + this.getShipping() + this.getTax()).toFixed(2);
+            return +parseFloat(this.getSubTotal() + this.getShipping() + this.getTaxesTotalValue()).toFixed(2);
         };
 
         this.removeItem = function (index) {
@@ -248,8 +248,9 @@ angular.module('ngCart', ['ngCart.directives'])
                 shippingAddress: this.getShippingAddress(),
                 billingAddress: this.getBillingAddress(),
                 shipping: this.getShipping(),
+                taxTotalValue: this.getTaxesTotalValue(),
                 tax: this.getTax(),
-                taxRate: this.getTaxRate(),
+                taxes: this.getTaxes(),
                 subTotal: this.getSubTotal(),
                 totalCost: this.totalCost(),
                 items:items
