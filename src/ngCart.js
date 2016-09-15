@@ -146,7 +146,7 @@ angular.module('ngCart', ['ngCart.directives'])
             angular.forEach(this.getCart().items, function (item) {
                 var tax = item.getTax();
                 if (tax) {
-                    tax.value = item.getTaxValue();
+                    tax.value = +item.getTaxValue();
                     var taxFound = false;
                     if (taxes.length) {
                         angular.forEach(taxes, function (arrayTax) {
