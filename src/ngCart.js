@@ -268,7 +268,7 @@ angular.module('ngCart', ['ngCart.directives'])
             _self.$cart.tax = storedCart.tax;
 
             angular.forEach(storedCart.items, function (item) {
-                _self.$cart.items.push(new ngCartItem(item._id,  item._name, item._price, item._quantity, item._data, item._weight, item._subTotal, item._taxValue, item._tax));
+                _self.$cart.items.push(new ngCartItem(item._id,  item._name, item._price, item._quantity, item._data, item._weight, item._tax.taxPercent, item._tax.taxName));
             });
             this.$save();
         };
