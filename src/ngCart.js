@@ -152,10 +152,13 @@ angular.module('ngCart', ['ngCart.directives'])
                         angular.forEach(taxes, function (arrayTax) {
                             if ((arrayTax.name === tax.name) && (arrayTax.tax === tax.tax)) {
                                 taxFound = true;
-                                tax.value = parseFloat(arrayTax.value + tax.value).toFixed(2);
+
+                                arrayTax.value = parseFloat(arrayTax.value + tax.value);
                             }
                         });
-                        taxes.push(tax);
+                        if (!taxFound) {
+                            taxes.push(tax);
+                        }
                     } else {
                         taxes.push(tax);
                     }
@@ -192,7 +195,7 @@ angular.module('ngCart', ['ngCart.directives'])
         this.getSubTotal = function(){
             var total = 0;
             angular.forEach(this.getCart().items, function (item) {
-                total += item.getTotal();
+                total += item.getSubTotal();
             });
             return +parseFloat(total).toFixed(2);
         };
@@ -284,7 +287,7 @@ angular.module('ngCart', ['ngCart.directives'])
             this.setPrice(price);
             this.setQuantity(quantity);
             this.setWeight(weight);
-            this.setTax({name: taxName, tax: taxPercent});
+            this.setTax({'name': taxName, 'tax': taxPercent});
             this.setData(data);
         };
 
@@ -326,26 +329,6 @@ angular.module('ngCart', ['ngCart.directives'])
         item.prototype.getPrice = function(){
             return this._price;
         };
-
-        item.prototype.setTaxValue = function(price){
-            var priceFloat = parseFloat(price);
-            if (priceFloat) {
-                if (priceFloat <= 0) {
-                    $log.error('A price must be over 0');
-                } else {
-                    this._taxValue = (priceFloat);
-                }
-            } else {
-                $log.error('A price must be provided');
-            }
-        };
-        item.prototype.getTaxValue = function(){
-            var subTotal = parseFloat(this.getQuantity() * this.getPrice()).toFixed(2);
-            var taxValue = this.getTax().value;
-
-            return +parseFloat(subTotal * taxValue).toFixed(2);
-        };
-
 
         item.prototype.setQuantity = function(quantity, relative){
 
@@ -390,6 +373,7 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         item.prototype.setTax = function(data){
+            data.tax = parseFloat(data.tax);
             if (data) this._tax = data;
         };
 
@@ -400,14 +384,15 @@ angular.module('ngCart', ['ngCart.directives'])
 
         item.prototype.getTaxValue= function(){
             if (!this._tax) $log.info('This item has no tax');
-            else {return parseFloat(this.getQuantity() * this.getPrice() * this._tax.tax).toFixed(2);}
+            else {
+                return +parseFloat(this.getQuantity() * this.getPrice() * this._tax.tax).toFixed(2);
+            }
         };
 
         item.prototype.getTotal = function(){
-            var subTotal = parseFloat(this.getQuantity() * this.getPrice()).toFixed(2);
-            var taxValue = this.getTax().tax;
+            var taxValue = parseFloat(this.getTaxValue());
 
-            return +parseFloat(subTotal + subTotal * taxValue).toFixed(2);
+            return +parseFloat(this.getQuantity() * this.getPrice() + taxValue).toFixed(2);
         };
 
         item.prototype.getSubTotal = function(){
