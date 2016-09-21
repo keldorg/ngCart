@@ -267,7 +267,7 @@ angular.module('ngCart', ['ngCart.directives'])
             _self.$cart.tax = storedCart.tax;
 
             angular.forEach(storedCart.items, function (item) {
-                _self.$cart.items.push(new ngCartItem(item._id,  item._name, item._price, item._quantity, item._data, item._weight, item._tax.tax, item._tax.name));
+                _self.$cart.items.push(new ngCartItem(item._id,  item._name, item._price, item._quantity, item._data, item._weight, item._tax.tax, item._tax.name, item._unit, item._packageUnit, item._weightUnit ));
             });
             this.$save();
         };
@@ -280,12 +280,15 @@ angular.module('ngCart', ['ngCart.directives'])
 
     .factory('ngCartItem', ['$rootScope', '$log', function ($rootScope, $log) {
 
-        var item = function (id, name, price, quantity, data, weight, taxPercent, taxName) {
+        var item = function (id, name, price, quantity, data, weight, taxPercent, taxName, unit, packageUnit, weightUnit) {
             this.setId(id);
             this.setName(name);
+            this.setUnit(unit);
             this.setPrice(price);
+            this.setPackageUnit(packageUnit);
             this.setQuantity(quantity);
             this.setWeight(weight);
+            this.setWeightUnit(weightUnit);
             this.setTax({'name': taxName, 'tax': taxPercent});
             this.setData(data);
         };
@@ -399,6 +402,30 @@ angular.module('ngCart', ['ngCart.directives'])
             return +parseFloat(this.getQuantity() * this.getPrice()).toFixed(2);
         };
 
+        item.prototype.setUnit = function(data){
+            if (data) this._unit = data;
+        };
+
+        item.prototype.getUnit = function(data){
+            if (data) this._unit = data;
+        };
+
+        item.prototype.setPackageUnit = function(data){
+            if (data) this._packageUnit = data;
+        };
+
+        item.prototype.getPackageUnit = function(data){
+            if (data) this._packageUnit = data;
+        };
+
+        item.prototype.setWeightUnit = function(data){
+            if (data) this._weightUnit = data;
+        };
+
+        item.prototype.getWeightUnit  = function(data){
+            if (data) this._weightUnit = data;
+        };
+
         item.prototype.toObject = function() {
             return {
                 id: this.getId(),
@@ -410,7 +437,10 @@ angular.module('ngCart', ['ngCart.directives'])
                 subTotal: this.getSubTotal(),
                 taxValue: this.getTaxValue(),
                 tax: this.getTax(),
-                total: this.getTotal()
+                total: this.getTotal(),
+                unit: this.getUnit(),
+                weightUnit: this.getWeightUnit(),
+                packageUnit: this.getPackageUnit()
             }
         };
 
@@ -472,6 +502,9 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
                 weight: '@',
                 taxpercent: '@',
                 taxname: '@',
+                unit: '@',
+                weightUnit: '@',
+                packageUnit: '@',
                 data:'='
             },
             transclude: true,

@@ -20,6 +20,9 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
                 weight: '@',
                 taxpercent: '@',
                 taxname: '@',
+                unit: '@',
+                weightUnit: '@',
+                packageUnit: '@',
                 data:'='
             },
             transclude: true,
