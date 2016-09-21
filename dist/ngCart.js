@@ -62,7 +62,7 @@ angular.module('ngCart', ['ngCart.directives'])
             };
         };
 
-        this.addItem = function (id, name, price, quantity, data, weight, taxPercent, taxName) {
+        this.addItem = function (id, name, price, quantity, data, weight, taxPercent, taxName, unit, packageUnit, weightUnit) {
 
             var inCart = this.getItemById(id);
 
@@ -71,7 +71,7 @@ angular.module('ngCart', ['ngCart.directives'])
                 inCart.setQuantity(quantity, false);
                 $rootScope.$broadcast('ngCart:itemUpdated', inCart);
             } else {
-                var newItem = new ngCartItem(id, name, price, quantity, data, weight, taxPercent, taxName);
+                var newItem = new ngCartItem(id, name, price, quantity, data, weight, taxPercent, taxName, unit, packageUnit, weightUnit);
                 this.$cart.items.push(newItem);
                 $rootScope.$broadcast('ngCart:itemAdded', newItem);
             }
@@ -406,24 +406,35 @@ angular.module('ngCart', ['ngCart.directives'])
             if (data) this._unit = data;
         };
 
-        item.prototype.getUnit = function(data){
-            if (data) this._unit = data;
+        item.prototype.getUnit = function(){
+            if (this._unit) return this._unit;
+            else $log.info('This item has no unit');
         };
 
         item.prototype.setPackageUnit = function(data){
             if (data) this._packageUnit = data;
         };
 
-        item.prototype.getPackageUnit = function(data){
-            if (data) this._packageUnit = data;
+        item.prototype.getPackageUnit = function(){
+            if (this._packageUnit) return this._packageUnit;
+            else $log.info('This item has no unit per package');
         };
 
         item.prototype.setWeightUnit = function(data){
             if (data) this._weightUnit = data;
         };
 
-        item.prototype.getWeightUnit  = function(data){
-            if (data) this._weightUnit = data;
+        item.prototype.getWeightUnit  = function(){
+            if (this._weightUnit) return this._weightUnit;
+            else $log.info('This item has no weight unit');
+        };
+
+        item.prototype.getTotalUnits  = function(){
+            if (this._unit !== unitary) {
+                return this._quantity;
+            } else {
+                return +parseFloat(this._packageUnit * this._quantity).toFixed(0);
+            }
         };
 
         item.prototype.toObject = function() {
@@ -439,6 +450,7 @@ angular.module('ngCart', ['ngCart.directives'])
                 tax: this.getTax(),
                 total: this.getTotal(),
                 unit: this.getUnit(),
+                totalUnits: this.getTotalUnits(),
                 weightUnit: this.getWeightUnit(),
                 packageUnit: this.getPackageUnit()
             }
