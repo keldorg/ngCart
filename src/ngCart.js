@@ -430,7 +430,7 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         item.prototype.getTotalUnits  = function(){
-            if (this._unit !== unitary) {
+            if (this._unit !== 'unitary') {
                 return this._quantity;
             } else {
                 return +parseFloat(this._packageUnit * this._quantity).toFixed(0);
