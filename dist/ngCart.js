@@ -386,20 +386,24 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         item.prototype.getTaxValue= function(){
-            if (!this._tax) $log.info('This item has no tax');
-            else {
-                return +parseFloat(this.getQuantity() * this.getPrice() * this._tax.tax).toFixed(2);
+            if (!this._tax) {
+                $log.info('This item has no tax');
+                return 0;
+            } else {
+                return +parseFloat(this.getSubTotal() * this._tax.tax).toFixed(2);
             }
         };
 
         item.prototype.getTotal = function(){
-            var taxValue = parseFloat(this.getTaxValue());
-
-            return +parseFloat(this.getQuantity() * this.getPrice() + taxValue).toFixed(2);
+            return +parseFloat(this.getSubTotal() + this.getTaxValue()).toFixed(2);
         };
 
         item.prototype.getSubTotal = function(){
-            return +parseFloat(this.getQuantity() * this.getPrice()).toFixed(2);
+            if (this._unit !== 'unitary') {
+                return +parseFloat(this.getQuantity() * this.getPrice()).toFixed(2);
+            } else {
+                return +parseFloat(this.getTotalUnits() * this.getPrice()).toFixed(2);
+            }
         };
 
         item.prototype.setUnit = function(data){
